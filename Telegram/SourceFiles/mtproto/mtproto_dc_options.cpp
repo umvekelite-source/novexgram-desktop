@@ -29,7 +29,7 @@ struct BuiltInDc {
 };
 
 const BuiltInDc kBuiltInDcs[] = {
-	{ 1, "149.154.175.50" , 443 },
+	{	1, "127.0.0.1"      ,	8080 }, // NovexGram Sovereign Server DC1
 	{ 2, "149.154.167.51" , 443 },
 	{ 2, "95.161.76.100"  , 443 },
 	{ 3, "149.154.175.100", 443 },
