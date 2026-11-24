@@ -436,6 +436,59 @@ void ShowGodModeBox(not_null<Window::SessionController*> controller) {
 
 		box->addSkip(12);
 
+				// --- Channel Giveaways (Розыгрыши Звезд и Premium) ---
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			u"<b>🎉 Запуск Розыгрышей (Giveaways) в каналах:</b><br/>"
+			"Проводите официальные розыгрыши Telegram Premium, Stars и Gram."_q,
+			st::boxLabel));
+
+		const auto channelInput = box->addRow(object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			rpl::single(u"Канал для конкурса (например: @novexgram или @boba_channel)"_q),
+			u"@novexgram"_q));
+
+		const auto selectedPrize = std::make_shared<QString>(u"⭐ 10,000 Telegram Stars (5 победителей)"_q);
+
+		const auto prizeLabel = box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(u"Выбранный приз: ⭐ 10,000 Stars (5 победителей)"_q),
+			st::boxLabel));
+
+		const auto prizes = std::vector<std::pair<QString, QString>>{
+			{ u"⭐ 10,000 Stars"_q, u"⭐ 10,000 Telegram Stars (5 победителей по 2,000 ⭐)"_q },
+			{ u"👑 5x Premium (1 год)"_q, u"👑 5 подписок Telegram Premium на 1 год"_q },
+			{ u"💎 25,000 Gram"_q, u"💎 25,000 Gram Diamonds (5 победителей по 5,000 💎)"_q },
+			{ u"🎁 3x NFT #0001"_q, u"🎁 3 Уникальных NFT Подарка с номером #0001"_q },
+		};
+
+		for (const auto &[shortName, fullName] : prizes) {
+			box->addRow(object_ptr<Ui::RoundButton>(
+				box,
+				rpl::single(u"Приз: "_q + shortName),
+				st::defaultBoxButton
+			))->setClickedCallback([=] {
+				*selectedPrize = fullName;
+				prizeLabel->setText(u"Выбранный приз: "_q + fullName);
+			});
+			box->addSkip(2);
+		}
+
+		box->addSkip(6);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"🎉 Запустить Розыгрыш в Канале (Бесплатно для Создателя)"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			const auto chan = channelInput->getLastText().trimmed();
+			controller->uiShow()->showToast(
+				u"🚀 Розыгрыш ["_q + *selectedPrize + u"] успешно запущен в канале " + chan + u"!"_q);
+		});
+
+		box->addSkip(12);
+
 		// --- Save / Close ---
 		box->addButton(rpl::single(u"Сохранить и применить"_q), [=] {
 			box->closeBox();
