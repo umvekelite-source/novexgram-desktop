@@ -195,7 +195,6 @@ void PhoneWidget::submit() {
 	cancelNearestDcRequest();
 
 	// Check if such account is authorized already.
-	const auto phoneDigits = DigitsOnly(phone);
 	for (const auto &[index, existing] : Core::App().domain().accounts()) {
 		const auto raw = existing.get();
 		if (const auto session = raw->maybeSession()) {
