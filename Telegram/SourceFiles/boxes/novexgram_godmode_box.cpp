@@ -230,6 +230,68 @@ void ShowGodModeBox(not_null<Window::SessionController*> controller) {
 
 		box->addSkip(15);
 
+				box->addSkip(10);
+
+		// --- Gift Upgrade Section ---
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			u"<b>✨ Улучшение подарка до Уникального NFT (Upgrade Gift):</b><br/>"
+			"Превращение обычного подарка в редкий NFT с кастомным номером и уникальным фоном."_q,
+			st::boxLabel));
+
+		const auto upgradeGiftName = box->addRow(object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			rpl::single(u"Название или ID подарка (например: Легендарный Пепе)"_q),
+			u"Легендарный Пепе"_q));
+
+		const auto upgradeSerialInput = box->addRow(object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			rpl::single(u"Порядковый номер NFT (например: #0001 или #0007)"_q),
+			u"#0001"_q));
+
+		const auto selectedBackdrop = std::make_shared<QString>(u"👑 Золотой мифический фон"_q);
+
+		const auto backdropLabel = box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(u"Выбранный NFT-фон: 👑 Золотой мифический"_q),
+			st::boxLabel));
+
+		const auto backdrops = std::vector<std::pair<QString, QString>>{
+			{ u"👑 Золотой мифический"_q, u"👑 Золотой мифический фон"_q },
+			{ u"💎 Алмазный суверенный"_q, u"💎 Алмазный суверенный фон"_q },
+			{ u"🔥 Неоновый кибер-огонь"_q, u"🔥 Неоновый кибер-огонь"_q },
+			{ u"🌌 Космический фиолетовый"_q, u"🌌 Космический фиолетовый фон"_q },
+		};
+
+		for (const auto &[shortName, fullName] : backdrops) {
+			box->addRow(object_ptr<Ui::RoundButton>(
+				box,
+				rpl::single(shortName),
+				st::defaultBoxButton
+			))->setClickedCallback([=] {
+				*selectedBackdrop = fullName;
+				backdropLabel->setText(u"Выбранный NFT-фон: "_q + fullName);
+			});
+			box->addSkip(2);
+		}
+
+		box->addSkip(6);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"✨ Улучшить подарок до Уникального NFT (Бесплатно для Создателя)"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			const auto gift = upgradeGiftName->getLastText().trimmed();
+			const auto serial = upgradeSerialInput->getLastText().trimmed();
+			controller->uiShow()->showToast(
+				u"🎉 Подарок ""_q + gift + u"" успешно улучшен до Уникального NFT " + serial + u" с фоном " + *selectedBackdrop + u"!"_q);
+		});
+
+		box->addSkip(12);
+
 		// --- Save / Close ---
 		box->addButton(rpl::single(u"Сохранить и применить"_q), [=] {
 			box->closeBox();
