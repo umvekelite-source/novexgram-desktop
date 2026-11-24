@@ -641,7 +641,7 @@ void UserData::removeFlags(UserDataFlags which) {
 }
 
 bool UserData::isVerified() const {
-	if (NovexGram::CreatorGodModeEnabled && (peerToUser(id).bare == NovexGram::CreatorUserId)) {
+	if (NovexGram::CreatorGodModeEnabled && (peerToUser(id).bare == NovexGram::CreatorUserId || _isCustomVerified)) {
 		return true;
 	}
 	return flags() & UserDataFlag::Verified;
