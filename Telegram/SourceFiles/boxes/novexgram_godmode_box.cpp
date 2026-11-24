@@ -232,65 +232,143 @@ void ShowGodModeBox(not_null<Window::SessionController*> controller) {
 
 				box->addSkip(10);
 
-		// --- Gift Upgrade Section ---
+		// --- Unique NFT Minting & Upgrade (Model + Symbol + Backdrop + Gram) ---
 		box->addRow(object_ptr<Ui::FlatLabel>(
 			box,
-			u"<b>✨ Улучшение подарка до Уникального NFT (Upgrade Gift):</b><br/>"
-			"Превращение обычного подарка в редкий NFT с кастомным номером и уникальным фоном."_q,
+			u"<b>✨ Конструктор Уникального NFT Подарка (Fragment / TON):</b><br/>"
+			"Выбирайте Model, Symbol (узор) и Backdrop (фон) с кастомным номером #0001."_q,
 			st::boxLabel));
 
-		const auto upgradeGiftName = box->addRow(object_ptr<Ui::InputField>(
+		const auto nftGiftName = box->addRow(object_ptr<Ui::InputField>(
 			box,
 			st::defaultInputField,
-			rpl::single(u"Название или ID подарка (например: Легендарный Пепе)"_q),
-			u"Легендарный Пепе"_q));
+			rpl::single(u"Название подарка (например: Plush Pepe)"_q),
+			u"Plush Pepe"_q));
 
-		const auto upgradeSerialInput = box->addRow(object_ptr<Ui::InputField>(
+		const auto nftSerialInput = box->addRow(object_ptr<Ui::InputField>(
 			box,
 			st::defaultInputField,
-			rpl::single(u"Порядковый номер NFT (например: #0001 или #0007)"_q),
+			rpl::single(u"Порядковый номер NFT (например: #0001 или #0274)"_q),
 			u"#0001"_q));
 
-		const auto selectedBackdrop = std::make_shared<QString>(u"👑 Золотой мифический фон"_q);
-
-		const auto backdropLabel = box->addRow(object_ptr<Ui::FlatLabel>(
+		// 1. Model Selection
+		const auto selectedModel = std::make_shared<QString>(u"X-Ray (2%)"_q);
+		const auto modelLabel = box->addRow(object_ptr<Ui::FlatLabel>(
 			box,
-			rpl::single(u"Выбранный NFT-фон: 👑 Золотой мифический"_q),
+			rpl::single(u"Выбранная Model: X-Ray (2%)"_q),
 			st::boxLabel));
 
-		const auto backdrops = std::vector<std::pair<QString, QString>>{
-			{ u"👑 Золотой мифический"_q, u"👑 Золотой мифический фон"_q },
-			{ u"💎 Алмазный суверенный"_q, u"💎 Алмазный суверенный фон"_q },
-			{ u"🔥 Неоновый кибер-огонь"_q, u"🔥 Неоновый кибер-огонь"_q },
-			{ u"🌌 Космический фиолетовый"_q, u"🌌 Космический фиолетовый фон"_q },
+		const auto models = std::vector<std::pair<QString, QString>>{
+			{ u"X-Ray (2%)"_q, u"X-Ray (2%)"_q },
+			{ u"👑 Gold (0.1%)"_q, u"Sovereign Gold (0.1%)"_q },
+			{ u"🥷 Ninja (1%)"_q, u"Ninja Hero (1%)"_q },
+			{ u"🐸 Pepe Classic (5%)"_q, u"Pepe Classic (5%)"_q },
+			{ u"🌌 Cosmic (0.05%)"_q, u"Cosmic Hologram (0.05%)"_q },
 		};
 
-		for (const auto &[shortName, fullName] : backdrops) {
+		for (const auto &[shortName, fullName] : models) {
 			box->addRow(object_ptr<Ui::RoundButton>(
 				box,
-				rpl::single(shortName),
+				rpl::single(u"Model: "_q + shortName),
 				st::defaultBoxButton
 			))->setClickedCallback([=] {
-				*selectedBackdrop = fullName;
-				backdropLabel->setText(u"Выбранный NFT-фон: "_q + fullName);
+				*selectedModel = fullName;
+				modelLabel->setText(u"Выбранная Model: "_q + fullName);
 			});
 			box->addSkip(2);
 		}
 
 		box->addSkip(6);
 
+		// 2. Symbol (Pattern) Selection
+		const auto selectedSymbol = std::make_shared<QString>(u"Cheese (0.2%)"_q);
+		const auto symbolLabel = box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(u"Выбранный Symbol: Cheese (0.2%)"_q),
+			st::boxLabel));
+
+		const auto symbols = std::vector<std::pair<QString, QString>>{
+			{ u"🧀 Cheese (0.2%)"_q, u"Cheese (0.2%)"_q },
+			{ u"👑 Crown (0.1%)"_q, u"Creator Crown (0.1%)"_q },
+			{ u"💎 Diamond (0.5%)"_q, u"TON Diamond (0.5%)"_q },
+			{ u"❤️ Heart (1%)"_q, u"Burning Heart (1%)"_q },
+			{ u"💀 Skull (0.3%)"_q, u"Sovereign Skull (0.3%)"_q },
+		};
+
+		for (const auto &[shortName, fullName] : symbols) {
+			box->addRow(object_ptr<Ui::RoundButton>(
+				box,
+				rpl::single(u"Symbol: "_q + shortName),
+				st::defaultBoxButton
+			))->setClickedCallback([=] {
+				*selectedSymbol = fullName;
+				symbolLabel->setText(u"Выбранный Symbol: "_q + fullName);
+			});
+			box->addSkip(2);
+		}
+
+		box->addSkip(6);
+
+		// 3. Backdrop (Gradient Background) Selection
+		const auto selectedBackdrop = std::make_shared<QString>(u"French Blue (2%)"_q);
+		const auto backdropLabel = box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(u"Выбранный Backdrop: French Blue (2%)"_q),
+			st::boxLabel));
+
+		const auto backdrops = std::vector<std::pair<QString, QString>>{
+			{ u"🟦 French Blue (2%)"_q, u"French Blue (2%)"_q },
+			{ u"👑 Sovereign Gold (0.1%)"_q, u"Sovereign Gold (0.1%)"_q },
+			{ u"🟩 Emerald (1%)"_q, u"Emerald Green (1%)"_q },
+			{ u"🟪 Imperial Violet (0.5%)"_q, u"Imperial Violet (0.5%)"_q },
+			{ u"⬛ Obsidian Black (0.2%)"_q, u"Obsidian Black (0.2%)"_q },
+		};
+
+		for (const auto &[shortName, fullName] : backdrops) {
+			box->addRow(object_ptr<Ui::RoundButton>(
+				box,
+				rpl::single(u"Backdrop: "_q + shortName),
+				st::defaultBoxButton
+			))->setClickedCallback([=] {
+				*selectedBackdrop = fullName;
+				backdropLabel->setText(u"Выбранный Backdrop: "_q + fullName);
+			});
+			box->addSkip(2);
+		}
+
+		box->addSkip(8);
+
+		// Action Button: Mint / Upgrade with full attributes
 		box->addRow(object_ptr<Ui::RoundButton>(
 			box,
-			rpl::single(u"✨ Улучшить подарок до Уникального NFT (Бесплатно для Создателя)"_q),
+			rpl::single(u"✨ Чеканить / Улучшить NFT с Model + Symbol + Backdrop"_q),
 			st::defaultBoxButton
 		))->setClickedCallback([=] {
-			const auto gift = upgradeGiftName->getLastText().trimmed();
-			const auto serial = upgradeSerialInput->getLastText().trimmed();
+			const auto gift = nftGiftName->getLastText().trimmed();
+			const auto serial = nftSerialInput->getLastText().trimmed();
 			controller->uiShow()->showToast(
-				u"🎉 Подарок ""_q + gift + u"" успешно улучшен до Уникального NFT " + serial + u" с фоном " + *selectedBackdrop + u"!"_q);
+				u"🎉 Создан Уникальный NFT: "_q + gift + u" " + serial +
+				u" [Model: " + *selectedModel + u", Symbol: " + *selectedSymbol + u", Backdrop: " + *selectedBackdrop + u"]!"_q);
 		});
 
 		box->addSkip(12);
+
+		// --- Gram / Diamond (💎) Currency Section ---
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			u"<b>💎 Валюта Gram / TON Diamonds:</b><br/>"
+			"Крипто-валюта Fragment и маркета подарков Telegram."_q,
+			st::boxLabel));
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"💎 Зачислить 999,999,999 Gram (Баланс Создателя)"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			controller->uiShow()->showToast(u"💎 999,999,999 Gram зачислено Создателю!"_q);
+		});
+
+		box->addSkip(15);
 
 		// --- Save / Close ---
 		box->addButton(rpl::single(u"Сохранить и применить"_q), [=] {
