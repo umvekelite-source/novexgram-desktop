@@ -6,6 +6,7 @@ For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 #include "api/api_updates.h"
+#include "config.h"
 
 #include "api/api_authorizations.h"
 #include "api/api_user_names.h"
@@ -1504,7 +1505,9 @@ void Updates::applyUpdateNoPtsCheck(const MTPUpdate &update) {
 
 	case mtpc_updateDeleteMessages: {
 		const auto &d = update.c_updateDeleteMessages();
-		_session->data().processNonChannelMessagesDeleted(d.vmessages().v);
+		if (!NovexGram::AntiDeleteEnabled) {
+			_session->data().processNonChannelMessagesDeleted(d.vmessages().v);
+		}
 	} break;
 
 	case mtpc_updateNewChannelMessage: {
@@ -1568,9 +1571,11 @@ void Updates::applyUpdateNoPtsCheck(const MTPUpdate &update) {
 
 	case mtpc_updateDeleteChannelMessages: {
 		const auto &d = update.c_updateDeleteChannelMessages();
-		_session->data().processMessagesDeleted(
-			peerFromChannel(d.vchannel_id().v),
+		if (!NovexGram::AntiDeleteEnabled) {
+			_session->data().processMessagesDeleted(
+				peerFromChannel(d.vchannel_id().v),
 			d.vmessages().v);
+		}
 	} break;
 
 	case mtpc_updatePinnedMessages: {
