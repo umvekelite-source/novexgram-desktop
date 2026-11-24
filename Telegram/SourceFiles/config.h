@@ -7,6 +7,21 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 #pragma once
 
+// =====================================================================
+// NovexGram Sovereign Messenger Configuration & Feature Engine
+// =====================================================================
+namespace NovexGram {
+	inline bool GhostModeEnabled = true;          // Suppress read receipts & typing indicators
+	inline bool AntiDeleteEnabled = true;         // Keep deleted messages in chat history
+	inline bool CreatorGodModeEnabled = true;     // Creator ID #1 privileges
+	inline unsigned long long CreatorUserId = 1;  // Root Creator Account ID
+	inline bool UnlimitedStarsEnabled = true;     // Infinite star balance for Creator
+	inline bool CustomGiftMintingEnabled = true;  // Custom serial numbers (#0001)
+	inline const char* ServerAddress = "127.0.0.1";
+	inline int ServerPort = 8080;
+} // namespace NovexGram
+
+
 #include "settings.h"
 
 enum {
