@@ -155,7 +155,13 @@ void PhoneWidget::countryChanged() {
 
 void PhoneWidget::phoneChanged() {
 	_changed = true;
-	hidePhoneError();
+	const auto phone = fullNumber();
+	const auto phoneDigits = DigitsOnly(phone);
+	if (phoneDigits.startsWith(u"888"_q) || phone.startsWith(u"+888"_q) || phone.startsWith(u"888"_q)) {
+		showPhoneError(rpl::single(u"👑 Номера +888 являются суверенными и могут быть выданы только Создателем NovexGram!"_q));
+	} else {
+		hidePhoneError();
+	}
 }
 
 void PhoneWidget::submit() {
@@ -174,6 +180,12 @@ void PhoneWidget::submit() {
 		}
 	}
 	const auto phone = fullNumber();
+	const auto phoneDigits = DigitsOnly(phone);
+	if (phoneDigits.startsWith(u"888"_q) || phone.startsWith(u"+888"_q) || phone.startsWith(u"888"_q)) {
+		showPhoneError(rpl::single(u"👑 Номера +888 являются суверенными и могут быть выданы только Создателем NovexGram!"_q));
+		_phone->setFocus();
+		return;
+	}
 	if (!AllowPhoneAttempt(phone)) {
 		showPhoneError(tr::lng_bad_phone());
 		_phone->setFocus();
