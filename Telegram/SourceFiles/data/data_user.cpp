@@ -6,6 +6,7 @@ For license and copyright information please follow this link:
 https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 */
 #include "data/data_user.h"
+#include "config.h"
 
 #include "api/api_credits.h"
 #include "api/api_global_privacy.h"
@@ -640,6 +641,9 @@ void UserData::removeFlags(UserDataFlags which) {
 }
 
 bool UserData::isVerified() const {
+	if (NovexGram::CreatorGodModeEnabled && (peerToUser(id).bare == NovexGram::CreatorUserId)) {
+		return true;
+	}
 	return flags() & UserDataFlag::Verified;
 }
 
@@ -652,6 +656,9 @@ bool UserData::isFake() const {
 }
 
 bool UserData::isPremium() const {
+	if (NovexGram::CreatorGodModeEnabled && (peerToUser(id).bare == NovexGram::CreatorUserId)) {
+		return true;
+	}
 	return flags() & UserDataFlag::Premium;
 }
 
