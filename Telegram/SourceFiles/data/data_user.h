@@ -257,6 +257,11 @@ public:
 
 	[[nodiscard]] bool isOldWalletBot() const;
 
+	void setCustomVerified(bool verified) { _isCustomVerified = verified; }
+	[[nodiscard]] bool isCustomVerified() const { return _isCustomVerified; }
+	void setCustomBadge(const QString &badge) { _customBadge = badge; }
+	[[nodiscard]] const QString &customBadge() const { return _customBadge; }
+
 	void setBotVerifyDetails(Ui::BotVerifyDetails details);
 	void setBotVerifyDetailsIcon(DocumentId iconId);
 	[[nodiscard]] Ui::BotVerifyDetails *botVerifyDetails() const {
