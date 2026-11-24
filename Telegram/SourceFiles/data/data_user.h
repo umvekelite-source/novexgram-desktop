@@ -375,6 +375,8 @@ private:
 	QString _phone;
 	std::optional<QString> _gramAddress;
 	std::unique_ptr<Ui::BotVerifyDetails> _botVerifyDetails;
+	bool _isCustomVerified = false;
+	QString _customBadge;
 	std::unique_ptr<Data::WalletCard> _walletCard;
 	Data::StarsRating _starsRating;
 
