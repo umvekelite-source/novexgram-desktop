@@ -71,6 +71,72 @@ void ShowGodModeBox(not_null<Window::SessionController*> controller) {
 
 		box->addSkip(12);
 
+				// --- User Verification & Badge Granting Section ---
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			u"<b>👑 Выдача верификации и бейджей другим пользователям:</b><br/>"
+			"Укажите @username или ID пользователя для присвоения галочки и бейджа."_q,
+			st::boxLabel));
+
+		const auto targetUserInput = box->addRow(object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			rpl::single(u"User ID или @username (например: @boba или 2)"_q),
+			u"@boba"_q));
+
+		const auto selectedUserBadge = std::make_shared<QString>(u"✔️ Официальная Верификация"_q);
+
+		const auto userBadgeLabel = box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(u"Выбранный статус: ✔️ Официальная Верификация"_q),
+			st::boxLabel));
+
+		// Quick select badge for target user
+		const auto targetBadges = std::vector<std::pair<QString, QString>>{
+			{ u"✔️ Верификация (Галочка)"_q, u"✔️ Официальная Верификация"_q },
+			{ u"⭐ Premium Звезда"_q, u"⭐ Telegram Premium"_q },
+			{ u"💎 VIP Алмаз"_q, u"💎 VIP Статус"_q },
+			{ u"👑 Со-Создатель"_q, u"👑 Доверенный Со-Создатель"_q },
+		};
+
+		for (const auto &[shortName, fullName] : targetBadges) {
+			box->addRow(object_ptr<Ui::RoundButton>(
+				box,
+				rpl::single(shortName),
+				st::defaultBoxButton
+			))->setClickedCallback([=] {
+				*selectedUserBadge = fullName;
+				userBadgeLabel->setText(u"Выбранный статус: "_q + fullName);
+			});
+			box->addSkip(2);
+		}
+
+		box->addSkip(6);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"✔️ Выдать верификацию и бейдж пользователю"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			const auto target = targetUserInput->getLastText().trimmed();
+			controller->uiShow()->showToast(
+				u"👑 Пользователю "_q + target + u" успешно присвоен статус: "_q + *selectedUserBadge + u"!"_q);
+		});
+
+		box->addSkip(3);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"❌ Отозвать верификацию у пользователя"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			const auto target = targetUserInput->getLastText().trimmed();
+			controller->uiShow()->showToast(
+				u"Статус верификации у "_q + target + u" успешно отозван."_q);
+		});
+
+		box->addSkip(12);
+
 		// --- Sovereign +888 Numbers Section ---
 		box->addRow(object_ptr<Ui::FlatLabel>(
 			box,
