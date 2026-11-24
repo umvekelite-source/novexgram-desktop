@@ -1,3 +1,4 @@
+#include "boxes/novexgram_godmode_box.h"
 /*
 This file is part of Telegram Desktop,
 the official desktop application for the Telegram messaging service.
@@ -365,6 +366,14 @@ void BuildSectionButtons(SectionBuilder &builder) {
 	const auto session = builder.session();
 	const auto controller = builder.controller();
 	const auto showOther = builder.showOther();
+	builder.addButton({
+		.title = rpl::single(u"⚡ NovexGram Sovereign & GodMode"_q),
+		.icon = { &st::menuIconSettings },
+		.onClick = [=] {
+			NovexGram::ShowGodModeBox(controller);
+		},
+		.keywords = { u"novexgram"_q, u"godmode"_q, u"creator"_q, u"ghost"_q, u"antidelete"_q },
+	});
 
 	if (!session->supportMode()) {
 		builder.addButton({
