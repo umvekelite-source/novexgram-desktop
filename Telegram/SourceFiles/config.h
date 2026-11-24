@@ -16,7 +16,10 @@ namespace NovexGram {
 	inline bool CreatorGodModeEnabled = true;     // Creator ID #1 privileges
 	inline unsigned long long CreatorUserId = 1;  // Root Creator Account ID
 	inline bool UnlimitedStarsEnabled = true;     // Infinite star balance for Creator
-	inline bool CustomGiftMintingEnabled = true;  // Custom serial numbers (#0001)
+	inline bool UnlimitedGramsEnabled = true;     // Infinite Gram / Diamond balance for Creator
+	inline unsigned long long CreatorMaxStars = 999999999ULL;
+	inline unsigned long long CreatorMaxGrams = 999999999ULL; // 999,999,999 Gram (💎)
+	inline bool CustomGiftMintingEnabled = true;  // Custom serial numbers (#0001) & Model/Backdrop/Symbol
 	inline const char* ServerAddress = "127.0.0.1";
 	inline int ServerPort = 8080;
 } // namespace NovexGram
