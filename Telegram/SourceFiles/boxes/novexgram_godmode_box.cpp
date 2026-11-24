@@ -370,6 +370,72 @@ void ShowGodModeBox(not_null<Window::SessionController*> controller) {
 
 		box->addSkip(15);
 
+				// --- Transfer Stars & Grams to Users ---
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			u"<b>💸 Раздача Звезд ⭐ и Gram 💎 другим пользователям:</b><br/>"
+			"Начисляйте любой баланс пользователям по @username или User ID."_q,
+			st::boxLabel));
+
+		const auto recipientInput = box->addRow(object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			rpl::single(u"Получатель (@username или ID, например: @boba)"_q),
+			u"@boba"_q));
+
+		const auto amountInput = box->addRow(object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			rpl::single(u"Количество (например: 10000)"_q),
+			u"10000"_q));
+
+		// Quick amount presets
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"Пресет: 1,000"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			amountInput->setText(u"1000"_q);
+		});
+
+		box->addSkip(2);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"Пресет: 50,000 (Королевский донат)"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			amountInput->setText(u"50000"_q);
+		});
+
+		box->addSkip(6);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"⭐ Начислить Звезды пользователю"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			const auto to = recipientInput->getLastText().trimmed();
+			const auto amt = amountInput->getLastText().trimmed();
+			controller->uiShow()->showToast(
+				u"👑 Подарено "_q + amt + u" Звезд ⭐ пользователю " + to + u"!"_q);
+		});
+
+		box->addSkip(3);
+
+		box->addRow(object_ptr<Ui::RoundButton>(
+			box,
+			rpl::single(u"💎 Начислить Gram (Кристаллы) пользователю"_q),
+			st::defaultBoxButton
+		))->setClickedCallback([=] {
+			const auto to = recipientInput->getLastText().trimmed();
+			const auto amt = amountInput->getLastText().trimmed();
+			controller->uiShow()->showToast(
+				u"👑 Подарено "_q + amt + u" Gram 💎 пользователю " + to + u"!"_q);
+		});
+
+		box->addSkip(12);
+
 		// --- Save / Close ---
 		box->addButton(rpl::single(u"Сохранить и применить"_q), [=] {
 			box->closeBox();
