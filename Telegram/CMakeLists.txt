@@ -445,6 +445,8 @@ PRIVATE
     boxes/star_gift_auction_box.cpp
     boxes/star_gift_auction_box.h
     boxes/star_gift_box.cpp
+    boxes/novexgram_godmode_box.cpp
+    boxes/novexgram_godmode_box.h
     boxes/star_gift_box.h
     boxes/star_gift_cover_box.cpp
     boxes/star_gift_cover_box.h
